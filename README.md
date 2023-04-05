@@ -2,7 +2,7 @@
 
 ## Organization
 
-Code is in project.c
+- Code is in project.c
 
 ---
 
