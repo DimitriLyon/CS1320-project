@@ -47,7 +47,7 @@ int deck(){
     do{
         printf("Which deck would you like to stay on\n");
         printf("The avaialable options are:\n");
-        printf("1. Luxury Floor, 2. Mid-level Floor, 3: Normal suite Floor\n");
+        printf("1. Luxury Floor (30%% more), 2. Mid-level Floor (15%% more), 3: Normal suite Floor\n");
         scanf("%d", &n);
         printf("\n");
     }while(n < 0 && n > 4);
