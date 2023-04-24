@@ -56,13 +56,13 @@ int deck(){
 //This will calculate the total price
 float total(float ppd, int nights, int floor){
     int t; //This is the total for the trip
-    if(floor == 3){ //Floor 3 will cost 30% more
+    if(floor == 1){ //Floor 1 will cost 30% more
         t = ppd * nights * 1.3;
     }
     else if(floor == 2){ //Floor 2 will cost 15% more
         t = ppd * nights * 1.15;
     }
-    else{ //Floor 1 will not have an additional cost
+    else{ //Floor 3 will not have an additional cost
         t = ppd * nights;
     }
     return t;
