@@ -25,4 +25,4 @@
 ## Optional features
 
 - [ ] GUI instead of CLI 
-- [ ] File IO
+- [x] File IO
