@@ -18,7 +18,7 @@ int saveData(char *filename);
 int main(int argc, int argv) {
 	printf("%ld\n", sizeof(userDat));
 	
-	if(initializeAccounts("loginInfo.txt")) {
+	if(initializeAccounts("badData.txt")) {
 		return -1;
 	}
 	
@@ -51,17 +51,17 @@ void deallocAccountMem() {
 	data file in the format:
 	
 	<userCount>
-	<username>, <password>, <balance>
-	<username>, <password>, <balance>
+	<username> <password> <balance>
+	<username> <password> <balance>
 	...
 	
-	where userName has a maximum length of 32 including null-terminator
+	where username has a maximum length of 32 including null-terminator
 	where password has a maximum length of 64 including null-terminator
 	
 	sets global accessableUsers to point to the first index of the allocated array
 	sets global userCount to the number of users allocated.
 	
-	prints to stderr on error.
+	prints to stdout on error.
 	
 	if fileOpen fails, errors.
 	
@@ -72,6 +72,7 @@ void deallocAccountMem() {
 	if file is longer than userCount, only reads the first userCount entries
 	
 	returns -1 on error.
+	returns 0 on success.
 	
 */
 int initializeAccounts(char *filename) {
@@ -85,8 +86,8 @@ int initializeAccounts(char *filename) {
 	
 	//Check if open was successful
 	if(dataFile == NULL) {
-		//If not, output failure to stderr and return -1
-		fprintf(stderr, "Error opening file: %s\n", strerror(errno));
+		//If not, output failure to stdout and return -1
+		fprintf(stdout, "Error opening file: %s\n", strerror(errno));
 		return -1;
 	}
 	
@@ -96,11 +97,11 @@ int initializeAccounts(char *filename) {
 	//Check if fscanf call read less than 1 thing from the file
 	if(readCount < 1) {
 		//Handle error
-		fprintf(stderr, "Error reading number of accounts in file\n");
+		fprintf(stdout, "Error reading number of accounts in file\n");
 		//Attempt to close file
 		if(fclose(dataFile) == EOF) {
-			//If not, output failure to stderr and return -1
-			fprintf(stderr, "Error closing file.\n");
+			//If not, output failure to stdout and return -1
+			fprintf(stdout, "Error closing file.\n");
 		}
 		return -1;
 	}
@@ -111,11 +112,11 @@ int initializeAccounts(char *filename) {
 	//Check if calloc failed
 	if(accessableUsers == NULL) {
 		//Handle error
-		fprintf(stderr, "Error allocating memory for userData\n");
+		fprintf(stdout, "Error allocating memory for userData\n");
 		//Attempt to close file
 		if(fclose(dataFile) == EOF) {
-			//If not, output failure to stderr and return -1
-			fprintf(stderr, "Error closing file.\n");
+			//If not, output failure to stdout and return -1
+			fprintf(stdout, "Error closing file.\n");
 		}
 		return -1;
 	}
@@ -128,11 +129,11 @@ int initializeAccounts(char *filename) {
 		//If so, error
 		if(feof(dataFile)) {
 			if(fclose(dataFile) == EOF) {
-				//If not, output failure to stderr and return -1
-				fprintf(stderr, "Error closing file.\n");
+				//If not, output failure to stdout and return -1
+				fprintf(stdout, "Error closing file.\n");
 			}
-			//If not, output failure to stderr and return -1
-			fprintf(stderr, "Error, not enough user accounts in file.\n");
+			//If not, output failure to stdout and return -1
+			fprintf(stdout, "Error, not enough user accounts in file.\n");
 			deallocAccountMem();
 			return -1;
 		}
@@ -147,19 +148,19 @@ int initializeAccounts(char *filename) {
 		if(readCount < 3) {
 			//Try to close file
 			if(fclose(dataFile) == EOF) {
-				//If not, output failure to stderr and return -1
-				fprintf(stderr, "Error closing file.\n");
+				//If not, output failure to stdout and return -1
+				fprintf(stdout, "Error closing file.\n");
 			}
-			//If not, output failure to stderr and return -1
-			fprintf(stderr, "Error: malformed data file file.\n");
+			//If not, output failure to stdout and return -1
+			fprintf(stdout, "Error: malformed data file file.\n");
 			deallocAccountMem();
 			return -1;
 		}
 	}
 	
 	if(fclose(dataFile) == EOF) {
-		//If not, output failure to stderr and return -1
-		fprintf(stderr, "Error closing file.\n");
+		//If not, output failure to stdout and return -1
+		fprintf(stdout, "Error closing file.\n");
 		deallocAccountMem();
 		return -1;
 	}
@@ -169,14 +170,14 @@ int initializeAccounts(char *filename) {
 
 int saveData(char *filename) {
 	FILE *optFile; //Handle for file to be written to
-	int i; //
+	int i; //Iterator
 	
 	
 	optFile = fopen(filename, "w");
 	//If file failed to open, report error and return -1.
 	if(optFile == NULL) {
 		//Report error.
-		fprintf(stderr, "Error opening file: %s\n", strerror(errno));
+		fprintf(stdout, "Error opening file: %s\n", strerror(errno));
 		return -1;
 	}
 	
