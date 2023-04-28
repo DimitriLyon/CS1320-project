@@ -6,14 +6,14 @@ int menu(){
 
 	printf("\t\t\t-- Cruise Express --\n");
 	printf("\t\t-- Below are the avialable options --\n");
-    printf("1: Bahamas\n");
-    printf("2: Hawaii\n");
-    printf("3: Bermuda\n");
-    printf("4: Caribbean\n");
-    printf("5: Mexico\n");
-    printf("6: Galapagos\n");
-    printf("7: Alaska\n");
-    printf("8: European\n");
+    printf("1: Bahamas             (Price per day: 155)\n");
+    printf("2: Hawaii              (Price per day: 210)\n");
+    printf("3: Bermuda             (Price per day: 225)\n");
+    printf("4: Caribbean           (Price per day: 305)\n");
+    printf("5: Mexico              (Price per day: 179)\n");
+    printf("6: Galapagos           (Price per day: 195)\n");
+    printf("7: Alaska              (Price per day: 150)\n");
+    printf("8: European            (Price per day: 390)\n");
     printf("9: Exit\n");
 
     printf("Please enter the number associated with the available options:\n");
@@ -29,6 +29,7 @@ void exits(){
     printf("\t\t\t-- Hope to see you again --\n");
 }
 
+//This function will ask user the amount of nights they want to stay
 int nights(){
     int n;
     do{
@@ -36,7 +37,7 @@ int nights(){
         printf("The minimum is 2 nights and maximum is 12 nights:\n");
         scanf("%d", &n);
         printf("\n");
-    }while(n < 2 && n > 12);
+    }while(n < 2 || n > 12);
 
     return n;
 }
@@ -50,7 +51,7 @@ int deck(){
         printf("1. Luxury Floor (30%% more), 2. Mid-level Floor (15%% more), 3: Normal suite Floor\n");
         scanf("%d", &n);
         printf("\n");
-    }while(n < 0 && n > 4);
+    }while(n < 1 || n > 3);
 }
 
 //This will calculate the total price
@@ -80,8 +81,6 @@ void printout(float ppd, int nights, int floor, float total){
 }
 
 
-
-
 void main() {
     int travel; //This will be where they are travelling
     int nightTime; //The amount of nights they would like to stay
@@ -101,7 +100,7 @@ void main() {
         break;
         
         case 2:
-            pricePerDay = 155;
+            pricePerDay = 210;
             nightTime = nights();
             floor = deck();
             price = total(pricePerDay, nightTime, floor);
@@ -109,7 +108,7 @@ void main() {
         break;
         
         case 3:
-            pricePerDay = 155;
+            pricePerDay = 225;
             nightTime = nights();
             floor = deck();
             price = total(pricePerDay, nightTime, floor);
@@ -117,7 +116,7 @@ void main() {
         break;
         
         case 4:
-            pricePerDay = 155;
+            pricePerDay = 305;
             nightTime = nights();
             floor = deck();
             price = total(pricePerDay, nightTime, floor);
@@ -125,7 +124,7 @@ void main() {
         break;
         
         case 5:
-            pricePerDay = 155;
+            pricePerDay = 179;
             nightTime = nights();
             floor = deck();
             price = total(pricePerDay, nightTime, floor);
@@ -133,7 +132,7 @@ void main() {
         break;
         
         case 6:
-            pricePerDay = 155;
+            pricePerDay = 195;
             nightTime = nights();
             floor = deck();
             price = total(pricePerDay, nightTime, floor);
@@ -141,7 +140,7 @@ void main() {
         break;
         
         case 7:
-            pricePerDay = 155;
+            pricePerDay = 150;
             nightTime = nights();
             floor = deck();
             price = total(pricePerDay, nightTime, floor);
@@ -149,7 +148,7 @@ void main() {
         break;
         
         case 8:
-            pricePerDay = 155;
+            pricePerDay = 390;
             nightTime = nights();
             floor = deck();
             price = total(pricePerDay, nightTime, floor);
