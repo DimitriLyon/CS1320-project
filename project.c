@@ -10,8 +10,8 @@ typedef struct userDat_struct{
 	double money;
 } userDat;
 
-userDat *accessableUsers;
-int userCount = -1;
+userDat accessableUsers[5];
+int userCount = 5;
 userDat *loggedInUser;
 
 int initializeAccounts(char *filename);
