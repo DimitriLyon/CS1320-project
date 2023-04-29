@@ -9,12 +9,13 @@ typedef struct userDat_struct{
 	double money;
 } userDat;
 
-userDat *accessableUsers;
-int userCount = -1;
+userDat accessableUsers[5];
+int userCount = 5;
 userDat *loggedInUser;
 
 int initializeAccounts(char *filename);
 int saveData(char *filename);
+int login();
 
 int main(int argc, int argv) {
 	printf("%ld\n", sizeof(userDat));
@@ -34,26 +35,12 @@ int main(int argc, int argv) {
 	return 0;
 }
 
-/**
-	Function that deallocates the memory for the accessableUsers
-	Additionally, sets userCount to -1
- */
-void deallocAccountMem() {
-	//free memory for array
-	free(accessableUsers);
-	//Set accessableUsers to NULL
-	accessableUsers = NULL;
-	//Set userCount to -1
-	userCount = -1;
-}
-
 
 /** 
 	Initializes the array of accounts.
 	Reads data from the file at filename.
 	data file in the format:
 	
-	<userCount>
 	<username> <password> <balance>
 	<username> <password> <balance>
 	...
@@ -61,16 +48,13 @@ void deallocAccountMem() {
 	where username has a maximum length of 32 including null-terminator
 	where password has a maximum length of 64 including null-terminator
 	
-	sets global accessableUsers to point to the first index of the allocated array
-	sets global userCount to the number of users allocated.
+	sets global accessableUsers to point to the first index of the array
 	
 	prints to stdout on error.
 	
 	if fileOpen fails, errors.
 	
-	if calloc fails, errors.
-	
-	if file is shorter than userCount, errors and frees accessableUsers
+	if file is shorter than userCount, errors
 	
 	if file is longer than userCount, only reads the first userCount entries
 	
@@ -94,35 +78,6 @@ int initializeAccounts(char *filename) {
 		return -1;
 	}
 	
-	//Attempt to read number of accounts in data file
-	readCount = fscanf(dataFile, " %d", &userCount);
-	
-	//Check if fscanf call read less than 1 thing from the file
-	if(readCount < 1) {
-		//Handle error
-		fprintf(stdout, "Error reading number of accounts in file\n");
-		//Attempt to close file
-		if(fclose(dataFile) == EOF) {
-			//If not, output failure to stdout and return -1
-			fprintf(stdout, "Error closing file.\n");
-		}
-		return -1;
-	}
-	
-	//Attempt to allocate memory for the array of account info.
-	accessableUsers = (userDat *) calloc((size_t) userCount, sizeof(userDat)); 
-	
-	//Check if calloc failed
-	if(accessableUsers == NULL) {
-		//Handle error
-		fprintf(stdout, "Error allocating memory for userData\n");
-		//Attempt to close file
-		if(fclose(dataFile) == EOF) {
-			//If not, output failure to stdout and return -1
-			fprintf(stdout, "Error closing file.\n");
-		}
-		return -1;
-	}
 	
 	//Read the number of users in the file
 	//Now read that many entries form the file.
@@ -131,13 +86,9 @@ int initializeAccounts(char *filename) {
 		//Check if reached end of file while still supposed to be reading
 		//If so, error
 		if(feof(dataFile)) {
-			if(fclose(dataFile) == EOF) {
-				//If not, output failure to stdout and return -1
-				fprintf(stdout, "Error closing file.\n");
-			}
+			fclose(dataFile);
 			//If not, output failure to stdout and return -1
 			fprintf(stdout, "Error, not enough user accounts in file.\n");
-			deallocAccountMem();
 			return -1;
 		}
 		
@@ -149,25 +100,16 @@ int initializeAccounts(char *filename) {
 		//Needs to read 3 things per line.
 		//If doesn't free memory and throw error
 		if(readCount < 3) {
-			//Try to close file
-			if(fclose(dataFile) == EOF) {
-				//If not, output failure to stdout and return -1
-				fprintf(stdout, "Error closing file.\n");
-			}
+			fclose(dataFile);
 			//If not, output failure to stdout and return -1
-			fprintf(stdout, "Error: malformed data file file.\n");
-			deallocAccountMem();
+			fprintf(stdout, "Error: malformed data file.\n");
+			
+			fprintf(stdout, "%d objects read\n", readCount);
 			return -1;
 		}
 	}
 	
-	if(fclose(dataFile) == EOF) {
-		//If not, output failure to stdout and return -1
-		fprintf(stdout, "Error closing file.\n");
-		deallocAccountMem();
-		return -1;
-	}
-	
+	fclose(dataFile);
 	return 0;
 }
 
