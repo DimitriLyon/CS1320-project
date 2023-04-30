@@ -322,6 +322,7 @@ void main() {
                 
                 case 9:
                 exits(); //This is if they choose to exit
+		multi = 'N';
                 break;
 
                 default:
